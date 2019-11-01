@@ -51,39 +51,37 @@ const actions = {
   },
   back15: {
     key: 'ArrowLeft',
-    count: 1,
-    wrapperHoldKey: 'Control',
-    holdKey: 'Shift'
+    count: 3,
+    // wrapperHoldKey: 'Control',
+    // holdKey: 'Shift'
   },
   skip15: {
     key: 'ArrowRight',
-    count: 1,
-    wrapperHoldKey: 'Control',
-    holdKey: 'Shift'
+    count: 3,
+    // wrapperHoldKey: 'Control',
+    // holdKey: 'Shift'
   },
   back30: {
     key: 'ArrowLeft',
-    count: 2,
-    wrapperHoldKey: 'Control',
-    holdKey: 'Shift'
+    count: 6,
+    // wrapperHoldKey: 'Control',
+    // holdKey: 'Shift'
   },
   skip30: {
     key: 'ArrowRight',
-    count: 2,
-    wrapperHoldKey: 'Control',
-    holdKey: 'Shift'
+    count: 6,
+    // wrapperHoldKey: 'Control',
+    // holdKey: 'Shift'
   },
   back15m: {
     key: 'ArrowLeft',
-    count: 60,
-    holdKey: 'Shift',
-    wrapperHoldKey: 'Control',
+    count: 180,
+    // holdKey: 'Shift',
+    // wrapperHoldKey: 'Control',
   },
   skip15m: {
     key: 'ArrowRight',
-    count: 60,
-    wrapperHoldKey: 'Control',
-    holdKey: 'Shift'
+    count: 180,
   },
   playpause: {
     key: 'Space',
@@ -109,8 +107,8 @@ const handle = async function ({ wrapperHoldKey, holdKey, key, count }, elHandle
       count = i
       break
     }
-    await elHandle.press(key)
-    await delay(200)
+    (key == 'Space') ? await elHandle.click() : await elHandle.press(key)
+    await delay(70)
   }
   if (holdKey) await elHandle._page.keyboard.up(holdKey)
   await delay(20)

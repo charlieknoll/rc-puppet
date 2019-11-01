@@ -4,6 +4,8 @@ Send skip-forward, skip-back, and pause to a video element in a browser window c
 
 ## Installation
 
+You'll need to have [Google Chrome](https://www.google.com/chrome/), [Node.js](https://nodejs.org/en/) and [Git](https://git-scm.com/) installed to get this working.
+
 ```
 git clone https://github.com/charlieknoll/rc-puppet.git
 cd rc-puppet

@@ -31,5 +31,5 @@ Start the server:
 node index.js --p 8085
 ```
 
-On another device on your internal network navigate to http://<serverip>:<port>
+On another device on your internal network navigate to http://serverip:port (e.g. http://192.168.0.21:8085)
 

@@ -1,0 +1,61 @@
+<html>
+
+<head>
+  <style>
+    .item {
+      width: 100%;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      background-color: DodgerBlue;
+    }
+
+    button {
+      background-color: #f1f1f1;
+      /* margin: 10px; */
+      padding: 20px;
+      font-size: 100px;
+      flex: 0 50%;
+      height: 20vh;
+    }
+
+    .full-width {
+      flex-basis: 100%;
+
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id='container' class='container'>
+    <button class='item' data-path='back5'>5s &lt;</button>
+    <button class='item' data-path='skip5'>5s ></button>
+    <button class='item' data-path='back15'>15s &lt;</button>
+    <button class='item' data-path='skip15'>15s ></button>
+    <button class='item' data-path='back30'>30s &lt;</button>
+    <button class='item' data-path='skip30'>30s ></button>
+    <button class='item' data-path='back15m'>15m &lt;</button>
+    <button class='item' data-path='skip15m'>15m ></button>
+  </div>
+  <div class='full-width'>
+    <button class='item' data-path='playpause'>play/pause</button>
+  </div>
+  <script>
+
+    [].slice.call(document.getElementsByClassName('item')).map(i => {
+      i.onclick = async function (e) {
+        e.preventDefault();
+        const path = e.target.dataset.path
+        const response = await fetch(window.location.href + path)
+
+
+      }
+    })
+  </script>
+</body>
+
+</html>

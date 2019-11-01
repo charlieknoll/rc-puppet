@@ -1,0 +1,26 @@
+{
+  "name": "rc-puppet",
+  "version": "1.0.0",
+  "description": "Send skip-forward, skip-back, and pause to a browser window created by puppeteer.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charlieknoll/rc-puppet.git"
+  },
+  "keywords": [
+    "puppeteer",
+    "video"
+  ],
+  "author": "Charlie Knoll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charlieknoll/rc-puppet/issues"
+  },
+  "homepage": "https://github.com/charlieknoll/rc-puppet#readme",
+  "dependencies": {
+    "puppeteer": "^2.0.0"
+  }
+}

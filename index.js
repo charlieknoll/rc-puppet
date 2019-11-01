@@ -4,19 +4,43 @@ const readFileAsync = promisify(fs.readFile)
 const cmd = "c/'Program Files (x86)'/Google/Chrome/Application/chrome.exe --remote-debugging-port=9222"
 const puppeteer = require('puppeteer')
 const http = require('http')
-let browser
+let elHandle
+const getElHandle = async function (page) {
+  let els = await page.$$('video')
+  if (els.length == 0) {
+    const childFrames = page.mainFrame().childFrames()
+    const videoFrames = []
+    for (var i = 0; i < childFrames.length; i++) {
+      const f = childFrames[i]
+      const cEls = await f.$$('video')
+      if (cEls.length > 0) {
+        return cEls[0]
+      }
+    }
+  } else {
+    return els[0]
+  }
+
+};
+//const getElHandle = async function (page) { };
+
 (async () => {
   try {
     browser = await puppeteer.connect({
       browserURL: 'http://127.0.0.1:9222',
       defaultViewport: null
     });
+    const pages = await browser.pages()
+    const page = pages.find(p => { return p.url().substring(0, 3) != 'dev' })
+    elHandle = await getElHandle(page)
+
   } catch (e) {
     console.log("Could not connect to chrome remote debugger. Make sure to shut down all instances then run the following command: ")
     console.log(cmd)
     console.log(e)
   }
 })()
+
 const actions = {
   back5: {
     key: 'ArrowLeft',
@@ -75,10 +99,10 @@ const delay = function (time) {
 }
 let locked = false
 let cancelPending = false
-const handle = async function ({ wrapperHoldKey, holdKey, key, count }, keyboard) {
-  if (wrapperHoldKey) await keyboard.down(wrapperHoldKey)
+const handle = async function ({ wrapperHoldKey, holdKey, key, count }, elHandle) {
+  if (wrapperHoldKey) await elHandle._page.keyboard.down(wrapperHoldKey)
   await delay(20)
-  if (holdKey) await keyboard.down(holdKey)
+  if (holdKey) await elHandle._page.keyboard.down(holdKey)
   await delay(20)
   for (let i = 0; i < count; i++) {
     if (cancelPending) {
@@ -86,19 +110,18 @@ const handle = async function ({ wrapperHoldKey, holdKey, key, count }, keyboard
       count = i
       break
     }
-    await keyboard.press(key)
+    await elHandle.press(key)
     await delay(200)
   }
-  if (holdKey) await keyboard.up(holdKey)
+  if (holdKey) await elHandle._page.keyboard.up(holdKey)
   await delay(20)
-  if (wrapperHoldKey) await keyboard.up(wrapperHoldKey)
+  if (wrapperHoldKey) await elHandle._page.keyboard.up(wrapperHoldKey)
   console.log("Pressed: " + (wrapperHoldKey ? wrapperHoldKey + '+' : '') + (holdKey ? holdKey + '+' : '') + key + ' ' + count + ' time(s)')
 }
 
 
 http.createServer(async function (req, res) {
-  const pages = await browser.pages()
-  if (pages.length === 0) {
+  if (!elHandle) {
     res.writeHead(500)
     res.end()
     return
@@ -124,7 +147,7 @@ http.createServer(async function (req, res) {
     return
   }
   locked = true
-  await handle(action, await pages[0].keyboard)
+  await handle(action, await elHandle)
   locked = false
   cancelPending = false
   res.writeHead(200)

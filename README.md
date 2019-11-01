@@ -39,4 +39,4 @@ TIP: Try to keep the screen on on the server and keep the mouse hovered over the
 
 Tap the buttons on the web page to skip back or forward.  You can tap any button to cancel a long fast forward or rewind (15m).
 
-![Screenshot](/screenshot.png)
+![Screenshot](/screenshot.PNG)

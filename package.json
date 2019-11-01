@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/charlieknoll/rc-puppet#readme",
   "dependencies": {
-    "puppeteer": "^2.0.0"
+    "puppeteer-core": "2.0.0"
   }
 }

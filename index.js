@@ -2,7 +2,7 @@ var fs = require('fs');
 const { promisify } = require('util')
 const readFileAsync = promisify(fs.readFile)
 const cmd = "c/'Program Files (x86)'/Google/Chrome/Application/chrome.exe --remote-debugging-port=9222"
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-core')
 const http = require('http')
 let elHandle
 const getElHandle = async function () {

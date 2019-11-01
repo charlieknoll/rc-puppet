@@ -1,6 +1,6 @@
 # rc-puppet
 
-Send skip-forward, skip-back, and pause to a browser window created by puppeteer
+Send skip-forward, skip-back, and pause to a video element in a browser window created by puppeteer. Videos in child frames is supported.
 
 ## Installation
 
@@ -35,3 +35,8 @@ On another device on your internal network navigate to http://serverip:port (e.g
 
 TIP: Try to keep the screen on on the server and keep the mouse hovered over the video to ensure the page receives the keyboard events.
 
+## Usage
+
+Tap the buttons on the web page to skip back or forward.  You can tap any button to cancel a long fast forward or rewind (15m).
+
+![Screenshot](screenshot.png)

@@ -118,7 +118,8 @@ const handle = async function ({ wrapperHoldKey, holdKey, key, count }, elHandle
   if (wrapperHoldKey) await elHandle._page.keyboard.up(wrapperHoldKey)
   console.log("Pressed: " + (wrapperHoldKey ? wrapperHoldKey + '+' : '') + (holdKey ? holdKey + '+' : '') + key + ' ' + count + ' time(s)')
 }
-
+var myArgs = process.argv.slice(2);
+const port = (myArgs.length == 1) ? myArgs[0] : 8085
 
 http.createServer(async function (req, res) {
   if (!elHandle) {
@@ -153,7 +154,8 @@ http.createServer(async function (req, res) {
   res.writeHead(200)
   res.end()
   return
-}).listen(8085)
+}).listen(port)
+console.log('Listening on port: ' + port)
 
 
 

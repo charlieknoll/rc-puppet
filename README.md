@@ -5,7 +5,7 @@ Send skip-forward, skip-back, and pause to a browser window created by puppeteer
 ## Installation
 
 ```
-git clone this repo
+git clone https://github.com/charlieknoll/rc-puppet.git
 cd rc-puppet
 npm install
 ```
@@ -28,8 +28,10 @@ ipconfig
 Start the server:
 
 ```
-node index.js --p 8085
+node index.js 8085
 ```
 
 On another device on your internal network navigate to http://serverip:port (e.g. http://192.168.0.21:8085)
+
+TIP: Try to keep the screen on on the server and keep the mouse hovered over the video to ensure the page receives the keyboard events.
 

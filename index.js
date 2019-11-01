@@ -5,26 +5,7 @@ const cmd = "c/'Program Files (x86)'/Google/Chrome/Application/chrome.exe --remo
 const puppeteer = require('puppeteer')
 const http = require('http')
 let elHandle
-const getElHandle = async function (page) {
-  let els = await page.$$('video')
-  if (els.length == 0) {
-    const childFrames = page.mainFrame().childFrames()
-    const videoFrames = []
-    for (var i = 0; i < childFrames.length; i++) {
-      const f = childFrames[i]
-      const cEls = await f.$$('video')
-      if (cEls.length > 0) {
-        return cEls[0]
-      }
-    }
-  } else {
-    return els[0]
-  }
-
-};
-//const getElHandle = async function (page) { };
-
-(async () => {
+const getElHandle = async function () {
   try {
     browser = await puppeteer.connect({
       browserURL: 'http://127.0.0.1:9222',
@@ -32,14 +13,32 @@ const getElHandle = async function (page) {
     });
     const pages = await browser.pages()
     const page = pages.find(p => { return p.url().substring(0, 3) != 'dev' })
-    elHandle = await getElHandle(page)
-
+    if (!page) throw new Error("Cannot find a page with a video element, have you started a video?")
+    let els = await page.$$('video')
+    if (els.length == 0) {
+      const childFrames = page.mainFrame().childFrames()
+      const videoFrames = []
+      for (var i = 0; i < childFrames.length; i++) {
+        const f = childFrames[i]
+        const cEls = await f.$$('video')
+        if (cEls.length > 0) {
+          return cEls[0]
+        }
+      }
+    } else {
+      return els[0]
+    }
   } catch (e) {
     console.log("Could not connect to chrome remote debugger. Make sure to shut down all instances then run the following command: ")
     console.log(cmd)
-    console.log(e)
+    throw e
   }
-})()
+
+
+};
+//const getElHandle = async function (page) { };
+
+
 
 const actions = {
   back5: {
@@ -123,9 +122,17 @@ const port = (myArgs.length == 1) ? myArgs[0] : 8085
 
 http.createServer(async function (req, res) {
   if (!elHandle) {
-    res.writeHead(500)
-    res.end()
-    return
+    try {
+      elHandle = await getElHandle()
+      if (!elHandle) throw new Error('Could not find video element on the opened page.')
+    } catch (e) {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.write(`<div style="font-size: 2em;"><h1 style="color: red; margin-top: 40px; text-align: center;">` + e.message + `</h1>
+        <h3 style="text-align: center;">Check the chrome tab and make sure a video is playing then click refresh.</h3>
+        <div style="text-align: center; font-size: 1em;" ><button  style="text-align: center; font-size: 4em;" onclick="window.location.reload()">Refresh</button></div></div>`)
+      res.end()
+      return
+    }
   }
   if (req.url == '/') {
     const contents = await readFileAsync("index.html")
@@ -137,7 +144,7 @@ http.createServer(async function (req, res) {
 
   const action = actions[req.url.substring(1)]
   if (!action) {
-    res.writeHead(500)
+    res.writeHead(404)
     res.end()
     return
   }
@@ -148,7 +155,16 @@ http.createServer(async function (req, res) {
     return
   }
   locked = true
-  await handle(action, await elHandle)
+  try {
+    await handle(action, await elHandle)
+  } catch (e) {
+    elHandle = null
+    res.writeHead(500)
+    res.end()
+    locked = false
+    cancelPending = false
+    return
+  }
   locked = false
   cancelPending = false
   res.writeHead(200)

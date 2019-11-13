@@ -51,33 +51,45 @@ const actions = {
   },
   back15: {
     key: 'ArrowLeft',
-    count: 3,
-    // wrapperHoldKey: 'Control',
-    // holdKey: 'Shift'
+    count: 1,
+    wrapperHoldKey: 'Control',
+    holdKey: 'Shift'
   },
   skip15: {
     key: 'ArrowRight',
-    count: 3,
-    // wrapperHoldKey: 'Control',
-    // holdKey: 'Shift'
+    count: 1,
+    wrapperHoldKey: 'Control',
+    holdKey: 'Shift'
   },
   back30: {
     key: 'ArrowLeft',
-    count: 6,
-    // wrapperHoldKey: 'Control',
-    // holdKey: 'Shift'
+    count: 2,
+    wrapperHoldKey: 'Control',
+    holdKey: 'Shift'
+  },
+  back2m: {
+    key: 'ArrowLeft',
+    count: 8,
+    wrapperHoldKey: 'Control',
+    holdKey: 'Shift'
+  },
+  skip2m: {
+    key: 'ArrowRight',
+    count: 8,
+    wrapperHoldKey: 'Control',
+    holdKey: 'Shift'
   },
   skip30: {
     key: 'ArrowRight',
-    count: 6,
-    // wrapperHoldKey: 'Control',
-    // holdKey: 'Shift'
+    count: 2,
+    wrapperHoldKey: 'Control',
+    holdKey: 'Shift'
   },
   back15m: {
     key: 'ArrowLeft',
-    count: 180,
-    // holdKey: 'Shift',
-    // wrapperHoldKey: 'Control',
+    count: 60,
+    holdKey: 'Shift',
+    wrapperHoldKey: 'Control',
   },
   skip15m: {
     key: 'ArrowRight',
